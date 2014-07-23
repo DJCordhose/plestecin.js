@@ -150,7 +150,7 @@ var game = game || {};
     };
 
     MovingObject.prototype.accelerate = function (deltaT) {
-        var currentControl = this.control();
+        var currentControl = this.cursorControl();
         if ('up' in currentControl) this.velocity.y -= this.acceleration * deltaT;
         if ('down' in currentControl) this.velocity.y += this.acceleration * deltaT;
         if ('left' in currentControl) this.velocity.x -= this.acceleration * deltaT;

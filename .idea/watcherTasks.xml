@@ -3,9 +3,9 @@
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
       <option name="arguments" value="--sourcemap $FileName$" />
-      <option name="checkSyntaxErrors" value="true" />
+      <option name="checkSyntaxErrors" value="false" />
       <option name="description" value="Compiles .ts files into .js files" />
-      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="exitCodeBehavior" value="ALWAYS" />
       <option name="fileExtension" value="ts" />
       <option name="immediateSync" value="true" />
       <option name="name" value="TypeScript" />
@@ -21,7 +21,7 @@
       </option>
       <option name="outputFromStdout" value="false" />
       <option name="passParentEnvs" value="true" />
-      <option name="program" value="$PATH$/tsc" />
+      <option name="program" value="$PROJECT_DIR$/../TypeScript/bin/tsc" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$FileDir$" />

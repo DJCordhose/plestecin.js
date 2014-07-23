@@ -2,13 +2,31 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/src/lib/ts/io.js" />
-        <item url="file://$PROJECT_DIR$/src/lib/ts/game.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/modules/simpleGameBase.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/modules/gameCanvas.js" />
+        <item url="file://$PROJECT_DIR$/src/lib-deprecated/ts/io.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/core/util.js" />
+        <item url="file://$PROJECT_DIR$/src/lib-deprecated/ts/game.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/modules/basicPhysics.js" />
+        <item url="file://$PROJECT_DIR$/src/tutorial/balls.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/core/plestecin.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/modules/cursorKeyControl.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/src/lib/ts/io.js" />
-      <root url="file://$PROJECT_DIR$/src/lib/ts/game.js" />
+      <root url="file://$PROJECT_DIR$/src/core/loop.js" />
+      <root url="file://$PROJECT_DIR$/src/core/loop.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/webAudio.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/webAudio.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/simpleGameBase.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/gameCanvas.js" />
+      <root url="file://$PROJECT_DIR$/src/lib-deprecated/ts/io.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/core/util.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/basicPhysics.js" />
+      <root url="file://$PROJECT_DIR$/src/lib-deprecated/ts/game.js" />
+      <root url="file://$PROJECT_DIR$/src/tutorial/balls.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/core/plestecin.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/keyboardControl.js" />
     </CLASSES>
     <SOURCES />
   </library>

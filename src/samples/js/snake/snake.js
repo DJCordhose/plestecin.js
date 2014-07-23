@@ -87,7 +87,7 @@ var snake = snake || {};
     };
 
     Snake.prototype.control = function () {
-        var originalControl = Snake._super.control.call(this);
+        var originalControl = Snake._super.cursorControl.call(this);
         var relativeControl = {};
 
         if (this.movesLeft()) {

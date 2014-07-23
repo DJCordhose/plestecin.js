@@ -1,0 +1,9 @@
+- Sprite-Registry-Plugin
+- Cursor-Key-Control-Plugin (mit eigenen Event-Types)
+- Double Buffering
+- Array von States halten alle Variablen der GameEngine und kann bei jedem Tick durch gamelogik umgeschaltet werden
+-  States haben namen . default ist automatisch angelegt.
+-  Instanz von Physik Objekt sind die Grenzen des Canvas
+  Name: WorldBounds
+  Objekt kann mit unterschiedlichem Verhalten angepasst werden, z.B.
+  Bounce oder Teleport
