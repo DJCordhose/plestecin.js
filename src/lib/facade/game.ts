@@ -1,49 +1,44 @@
 /// <reference path="../ext/waa.d.ts" />
 /// <reference path="../core/plestecin.ts" />
-/// <reference path="gameCanvas.ts" />
-/// <reference path="basicPhysics.ts" />
-/// <reference path="keyboardControl.ts" />
+/// <reference path="../modules/basicPhysics.ts" />
+/// <reference path="../modules/gameCanvas.ts" />
+/// <reference path="../modules/keyboardControl.ts" />
+/// <reference path="../modules/assetRegistry.ts" />
 
 module Plestecin {
-    export interface BallConfig extends MovingObjectConfig {
-        color: string;
-    }
-
-    export class Ball extends PhysicalObject implements GameObject {
-        color: string;
-        update: (deltaT: number) => void;
-
-        constructor(public gameCanvas: GameCanvas, config: BallConfig) {
-            super(config);
-            this.color = config.color;
-        }
-
-        render() {
-            this.gameCanvas.context.fillStyle = this.color;
-            this.gameCanvas.context.beginPath();
-            this.gameCanvas.context.arc(this.position.x, this.position.y, this.r, 0, Math.PI * 2);
-            this.gameCanvas.context.fill();
-            this.gameCanvas.context.closePath();
-        }
-
-    }
-
-    export class SimpleGameBase implements GameObject {
-        currentScore:number = 0;
-        private gameOver:boolean = false;
-        private running:boolean = true;
+    export class Game implements GameObject {
+        engine: Engine;
+        currentScore: number = 0;
+        private gameOver: boolean = false;
+        private running: boolean = true;
         gameCanvas: GameCanvas;
         keyboardControl: KeyboardControl;
+        assetRegistry: AssetRegistry;
+        physicsEngine: PhysicsEngine;
 
         audioContext;
 
-        constructor(public engine: Engine, private gameName:string, private description:string, canvasId?: string) {
-            this.gameCanvas = canvasId ? new GameCanvas({canvasId: canvasId}) : new GameCanvas();
-            this.keyboardControl = new KeyboardControl();
+        constructor(public gameName: string, public description: string, canvasId?: string) {
+            this.engine = new Engine();
+            this.init(canvasId);
+        }
+
+        init(canvasId?: string) {
+            this.gameCanvas = GameCanvas ? (canvasId ? new GameCanvas({canvasId: canvasId}) : new GameCanvas()) : null;
+            this.keyboardControl = KeyboardControl ? new KeyboardControl() : null;
+            this.assetRegistry = AssetRegistry ? new AssetRegistry() : null;
+            this.physicsEngine = PhysicsEngine ? new PhysicsEngine() : null;
             this.engine.registerPlugin(this.gameCanvas);
             this.engine.registerPlugin(this.keyboardControl);
+            this.engine.registerPlugin(this.assetRegistry);
+            this.engine.registerPlugin(this.physicsEngine);
             this.initAudioContext();
         }
+
+        update() {
+
+        }
+
 
         render() {
             var highScoreKey = this.gameName + '-highscore';
@@ -82,6 +77,10 @@ module Plestecin {
             this.engine.stop();
         }
 
+        start(init: () => void) {
+            window.onload = () => this.engine.start(init);
+        }
+
         private initAudioContext() {
             try {
                 if (webkitAudioContext || AudioContext) {
@@ -94,7 +93,7 @@ module Plestecin {
             }
         }
 
-        createOscillator(frequency:number) {
+        createOscillator(frequency: number, gain?: number) {
             var oscillator = this.audioContext.createOscillator(); // Oscillator defaults to sine wave
             oscillator.type = oscillator.SQUARE;
             oscillator.frequency.value = frequency; // in hertz
@@ -106,12 +105,21 @@ module Plestecin {
             // Connect the gain node to the destination.
             gainNode.connect(this.audioContext.destination);
             // Reduce the volume.
-            gainNode.gain.value = 0.1;
+            gainNode.gain.value = gain || 0.1;
 
             return oscillator;
         }
 
-        playSoundGood(frequency?:number) {
+        playSound(frequency, duration, type, gain) {
+            var oscillator = this.createOscillator(frequency, gain);
+            if (typeof type != 'undefined') {
+                oscillator.type = type;
+            }
+            oscillator.start(this.audioContext.currentTime); // play now
+            oscillator.stop(this.audioContext.currentTime + duration); // seconds
+        }
+
+        playSoundGood(frequency?: number) {
             if (this.audioContext) {
                 frequency = frequency || 440;
                 var oscillator = this.createOscillator(frequency);
@@ -120,7 +128,7 @@ module Plestecin {
             }
         }
 
-        playSoundBad(frequency?:number) {
+        playSoundBad(frequency?: number) {
             if (this.audioContext) {
                 frequency = frequency || 55;
                 var oscillator = this.createOscillator(frequency);

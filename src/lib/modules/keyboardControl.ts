@@ -5,7 +5,7 @@ module Plestecin {
     export class KeyboardControl implements GamePlugin {
         private pressed = {};
 
-        init(eventBus: GameEventBus, success: () => void) {
+        init(eventBus: GameEventBus, success: (gamePlugin: GamePlugin) => void) {
             window.onkeydown = e => {
                 if (e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 37 || e.keyCode === 39 || e.keyCode === 32) {
                     e.preventDefault();
@@ -15,7 +15,7 @@ module Plestecin {
 
             window.onkeyup = e => delete this.pressed[e.keyCode];
 
-            success();
+            success(this);
         }
 
         cursorControl() {

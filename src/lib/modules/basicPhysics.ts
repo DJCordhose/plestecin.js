@@ -3,64 +3,103 @@
 
 module Plestecin {
 
-    export interface PhysicalObjectConfig {
-        position: {
-            x: number;
-            y: number;
-        };
-        r: number;
+    export enum CollisionType {
+        CIRCLE_CIRCLE,
+        CIRCLE_BARRIER
     }
 
+    export interface PhysicsConfiguration {
+        object1: PhysicalObject;
+        object2: PhysicalObject;
+        callback(object1: PhysicalObject, object2: PhysicalObject): void;
+        collisionType?: CollisionType;
+    }
 
-    export class PhysicalObject {
-        position: {
-            x: number;
-            y: number;
-        };
-        r: number;
+    export class PhysicsEngine implements GamePlugin {
+        private configurations: PhysicsConfiguration[] = [];
 
-        constructor(config: PhysicalObjectConfig) {
-            this.position = config.position;
-            this.r = config.r;
+        init(eventBus: GameEventBus, success: (gamePlugin: GamePlugin) => void) {
+            eventBus.on(Engine.PRE_UPDATE_EVENT, () => this.checkConfigurations());
+            eventBus.on(Engine.OBJECT_REMOVE_EVENT, (source: any, type: string, event: GameObject) => this.removeAllObjectConfigurations(event));
+            success(this);
+        }
+
+        private checkConfigurations() {
+            this.configurations.forEach(configuration => {
+               switch (configuration.collisionType) {
+                   case CollisionType.CIRCLE_BARRIER:
+                       if (PhysicsEngine.circleCollidesWithBarrier(configuration.object1, <BarrierObject>configuration.object2)) {
+                           configuration.callback(configuration.object1, configuration.object2);
+                       }
+                       break;
+                   case CollisionType.CIRCLE_CIRCLE:
+                       if (PhysicsEngine.circleCollidesWithCircle(configuration.object1, configuration.object2)) {
+                           configuration.callback(configuration.object1, configuration.object2);
+                       }
+                       break;
+                   default :
+                       throw new Error("Unknown collision type: " + configuration.collisionType);
+               }
+            });
+        }
+
+        private removeAllObjectConfigurations(object: GameObject) {
+            this.configurations =
+                this.configurations.filter(configuration => configuration.object1 !== object && configuration.object2 !== object);
+        }
+
+        onCollision(physicsConfiguration: PhysicsConfiguration) {
+            physicsConfiguration.collisionType = physicsConfiguration.collisionType || CollisionType.CIRCLE_CIRCLE;
+            this.configurations.push(physicsConfiguration);
         }
 
         // http://www.adambrookesprojects.co.uk/project/canvas-collision-elastic-collision-tutorial/
-        collidesWith(other: PhysicalObjectConfig): boolean {
+        static circleCollidesWithCircle(object1: PhysicalObject, object2: PhysicalObject): boolean {
             // a^2 + b^2 = c^2
-            var a = other.position.x - this.position.x;
-            var b = other.position.y - this.position.y;
-            var r1 = this.r;
-            var r2 = other.r;
+            var a = object1.position.x - object2.position.x;
+            var b = object1.position.y - object2.position.y;
+            var r1 = object2.r;
+            var r2 = object1.r;
             var c = r1 + r2;
             return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2)) < c;
-        }
-    }
-
-    export class Border extends PhysicalObject {
-        endPosition: {
-            x: number;
-            y: number;
-        };
-        constructor(config: Border) {
-            super(config)
-            this.endPosition= config.endPosition;
         }
 
         // TODO
         // Circle/Line-Intersection
         // http://devmag.org.za/2009/04/17/basic-collision-detection-in-2d-part-2/
-        collidesWith(other: PhysicalObject): boolean {
+        static circleCollidesWithBarrier(object1: PhysicalObject, object2: BarrierObject): boolean {
             throw new Error("Not yet implemented");
-            if (this.position.x === this.endPosition.x) {
-                return true;
-            } else if (this.position.y === this.endPosition.y) {
-            } else {
-                throw new Error("Border can not be diagonal, yet");
-            }
+        }
+
+    }
+
+    export class PhysicalObject implements GameObject {
+        position: {
+            x: number;
+            y: number;
+        };
+        r: number;
+
+        constructor(config: PhysicalObject) {
+            this.position = config.position;
+            this.r = config.r;
         }
     }
 
-    export interface MovingObjectConfig extends PhysicalObjectConfig {
+    export class BarrierObject extends PhysicalObject {
+        endPosition: {
+            x: number;
+            y: number;
+        };
+
+        constructor(config: BarrierObject) {
+            super(config)
+            this.endPosition = config.endPosition;
+        }
+
+    }
+
+    export interface MovingObjectConfig extends PhysicalObject {
         velocity?: {
             x: number;
             y: number;
@@ -80,6 +119,8 @@ module Plestecin {
         gravity: number;
         acceleration: number;
         friction: number;
+
+        static BOUNCE_EVENT = "bounce";
 
         constructor(public gameCanvas: GameCanvas, config: MovingObjectConfig) {
             super(config);
@@ -106,7 +147,8 @@ module Plestecin {
             this.position.y += this.velocity.y * deltaT;
         }
 
-        // TODO: Should be solved using borders, but they are lacking a collision detection
+        // FIXME: This should not have a reference to canvas, but s
+        // should be solved using borders, but they are lacking a collision detection
         bounceOnEdges() {
             if (this.position.x - this.r <= 0) {
                 this.position.x = this.r;

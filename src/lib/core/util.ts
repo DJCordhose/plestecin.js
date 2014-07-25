@@ -24,15 +24,17 @@ module Plestecin {
                 this.listeners.forEach(pair => pair.type === type && pair.listener(source, type, event));
             }
 
-            addListener(type: string, listener: GameEventListener) {
+            on(type: string, listener: GameEventListener) {
+                // avoid double registration
+                this.detach(type, listener);
                 this.listeners.push({
                     type: type,
                     listener: listener
                 });
             }
 
-            removeObject(type: string, listener: GameEventListener) {
-                this.listeners = this.listeners.filter(pair => pair.type === type && pair.listener === listener);
+            detach(type: string, listener: GameEventListener) {
+                this.listeners = this.listeners.filter(pair => !(pair.type === type && pair.listener === listener));
             }
         }
 

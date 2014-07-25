@@ -4,13 +4,15 @@
       <sourceFilesUrls>
         <item url="file://$PROJECT_DIR$/src/lib/modules/simpleGameBase.js" />
         <item url="file://$PROJECT_DIR$/src/lib/modules/gameCanvas.js" />
-        <item url="file://$PROJECT_DIR$/src/lib-deprecated/ts/io.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/modules/assetRegistry.js" />
         <item url="file://$PROJECT_DIR$/src/lib/core/util.js" />
-        <item url="file://$PROJECT_DIR$/src/lib-deprecated/ts/game.js" />
         <item url="file://$PROJECT_DIR$/src/lib/modules/basicPhysics.js" />
-        <item url="file://$PROJECT_DIR$/src/tutorial/balls.js" />
+        <item url="file://$PROJECT_DIR$/src/samples/balls/main.js" />
+        <item url="file://$PROJECT_DIR$/src/samples/wurfram/wurfram.js" />
+        <item url="file://$PROJECT_DIR$/src/samples/balls/balls.js" />
+        <item url="file://$PROJECT_DIR$/src/samples/wurfram/main.js" />
         <item url="file://$PROJECT_DIR$/src/lib/core/plestecin.js" />
-        <item url="file://$PROJECT_DIR$/src/lib/modules/cursorKeyControl.js" />
+        <item url="file://$PROJECT_DIR$/src/lib/modules/keyboardControl.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
@@ -18,13 +20,19 @@
       <root url="file://$PROJECT_DIR$/src/core/loop.js" />
       <root url="file://$PROJECT_DIR$/src/lib/modules/webAudio.js" />
       <root url="file://$PROJECT_DIR$/src/lib/modules/webAudio.js" />
-      <root url="file://$PROJECT_DIR$/src/lib/modules/simpleGameBase.js" />
-      <root url="file://$PROJECT_DIR$/src/lib/modules/gameCanvas.js" />
       <root url="file://$PROJECT_DIR$/src/lib-deprecated/ts/io.js" />
-      <root url="file://$PROJECT_DIR$/src/lib/core/util.js" />
-      <root url="file://$PROJECT_DIR$/src/lib/modules/basicPhysics.js" />
       <root url="file://$PROJECT_DIR$/src/lib-deprecated/ts/game.js" />
-      <root url="file://$PROJECT_DIR$/src/tutorial/balls.js" />
+      <root url="file://$PROJECT_DIR$/src/lib-deprecated/ts/io.js" />
+      <root url="file://$PROJECT_DIR$/src/lib-deprecated/ts/game.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/facade/game.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/gameCanvas.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/core/util.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/assetRegistry.js" />
+      <root url="file://$PROJECT_DIR$/src/lib/modules/basicPhysics.js" />
+      <root url="file://$PROJECT_DIR$/src/samples/balls/main.js" />
+      <root url="file://$PROJECT_DIR$/src/samples/balls/balls.js" />
+      <root url="file://$PROJECT_DIR$/src/samples/wurfram/wurfram.js" />
+      <root url="file://$PROJECT_DIR$/src/samples/wurfram/main.js" />
       <root url="file://$PROJECT_DIR$/src/lib/core/plestecin.js" />
       <root url="file://$PROJECT_DIR$/src/lib/modules/keyboardControl.js" />
     </CLASSES>

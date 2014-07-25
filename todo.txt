@@ -1,9 +1,15 @@
-- Sprite-Registry-Plugin
-- Cursor-Key-Control-Plugin (mit eigenen Event-Types)
-- Double Buffering
+Must have
+- Balls-Game as blueprint in facade
+- Make wurfram game work
+- States
+- Ctrl-Z to pause in Simple Game Base
+- Start State and End State with Key-Control in Simple Game Base
 - Array von States halten alle Variablen der GameEngine und kann bei jedem Tick durch gamelogik umgeschaltet werden
 -  States haben namen . default ist automatisch angelegt.
--  Instanz von Physik Objekt sind die Grenzen des Canvas
-  Name: WorldBounds
-  Objekt kann mit unterschiedlichem Verhalten angepasst werden, z.B.
-  Bounce oder Teleport
+
+Nice to have
+- Double Buffering in Canvas
+- Collision Detection of Circle with Line (for Borders or Boundaries)
+- Mobile Control Plugin
+- Animations
+- Playing of wave audio

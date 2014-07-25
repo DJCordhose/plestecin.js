@@ -12,7 +12,7 @@ module Plestecin {
     }
 
     export interface GamePlugin {
-        init(eventBus: GameEventBus, success: () => void, error: (cause: Error) => void);
+        init(eventBus: GameEventBus, success: (gamePlugin: GamePlugin) => void, error: (gamePlugin: GamePlugin, cause: Error) => void);
     }
 
     export class Engine {
@@ -32,12 +32,16 @@ module Plestecin {
         static PRE_RENDER_EVENT = "prerender";
         static POST_RENDER_EVENT = "postrender";
 
-        private initPlugins(overallSuccess: () => void, overallError: (cause: Error) => void) {
+        static OBJECT_ADD_EVENT = "add";
+        static OBJECT_REMOVE_EVENT = "remove";
+
+
+        private initPlugins(overallSuccess: () => void, overallError: (gamePlugin: GamePlugin, cause: Error) => void) {
             var pluginCnt = this.plugins.length;
             if (pluginCnt === 0) {
                 overallSuccess();
             } else {
-                var pluginSuccess = () => {
+                var pluginSuccess = plugin => {
                     pluginCnt--;
                     if (pluginCnt === 0) {
                         overallSuccess();
@@ -47,11 +51,15 @@ module Plestecin {
             }
         }
 
-        start() {
+        start(init?: () => void) {
             var success = () => {
+                if (init) {
+                    init();
+                }
                 this.loop();
             };
-            var error = (cause: Error) => {
+            var error = (plugin: GamePlugin, cause: Error) => {
+                console.error("Plugin " + plugin + " caused error");
                 throw cause;
             };
 
@@ -60,6 +68,11 @@ module Plestecin {
 
         stop() {
             this.stopped = true;
+        }
+
+        restart() {
+            this.stopped = false;
+            this.loop();
         }
 
         private loop() {
@@ -80,14 +93,18 @@ module Plestecin {
 
         addObject(object: GameObject) {
             this.objects.splice(0, 0, object);
+            this.eventBus.broadcast(this, Engine.OBJECT_ADD_EVENT, object);
         }
 
         removeObject(object: GameObject) {
             this.objects.splice(this.objects.indexOf(object), 1);
+            this.eventBus.broadcast(this, Engine.OBJECT_REMOVE_EVENT, object);
         }
 
         registerPlugin(plugin: GamePlugin) {
-            this.plugins.push(plugin);
+            if (plugin) {
+                this.plugins.push(plugin);
+            }
         }
     }
 }
