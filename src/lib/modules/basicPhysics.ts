@@ -1,4 +1,5 @@
 /// <reference path="../core/plestecin.ts" />
+/// <reference path="../core/util.ts" />
 /// <reference path="gameCanvas.ts" />
 
 module Plestecin {
@@ -26,20 +27,20 @@ module Plestecin {
 
         private checkConfigurations() {
             this.configurations.forEach(configuration => {
-               switch (configuration.collisionType) {
-                   case CollisionType.CIRCLE_BARRIER:
-                       if (PhysicsEngine.circleCollidesWithBarrier(configuration.object1, <BarrierObject>configuration.object2)) {
-                           configuration.callback(configuration.object1, configuration.object2);
-                       }
-                       break;
-                   case CollisionType.CIRCLE_CIRCLE:
-                       if (PhysicsEngine.circleCollidesWithCircle(configuration.object1, configuration.object2)) {
-                           configuration.callback(configuration.object1, configuration.object2);
-                       }
-                       break;
-                   default :
-                       throw new Error("Unknown collision type: " + configuration.collisionType);
-               }
+                switch (configuration.collisionType) {
+                    case CollisionType.CIRCLE_BARRIER:
+                        if (PhysicsEngine.circleCollidesWithBarrier(configuration.object1, <BarrierObject>configuration.object2)) {
+                            configuration.callback(configuration.object1, configuration.object2);
+                        }
+                        break;
+                    case CollisionType.CIRCLE_CIRCLE:
+                        if (PhysicsEngine.circleCollidesWithCircle(configuration.object1, configuration.object2)) {
+                            configuration.callback(configuration.object1, configuration.object2);
+                        }
+                        break;
+                    default :
+                        throw new Error("Unknown collision type: " + configuration.collisionType);
+                }
             });
         }
 
@@ -122,7 +123,7 @@ module Plestecin {
 
         static BOUNCE_EVENT = "bounce";
 
-        constructor(public gameCanvas: GameCanvas, config: MovingObjectConfig) {
+        constructor(public eventBus: GameEventBus, public gameCanvas: GameCanvas, config: MovingObjectConfig) {
             super(config);
             this.velocity = config.velocity || {
                 x: 0,
@@ -153,18 +154,31 @@ module Plestecin {
             if (this.position.x - this.r <= 0) {
                 this.position.x = this.r;
                 this.velocity.x = -this.velocity.x;
+                this.notifyOfBounce();
             }
             if (this.position.x + this.r >= this.gameCanvas.canvas.width) {
                 this.position.x = this.gameCanvas.canvas.width - this.r;
                 this.velocity.x = -this.velocity.x;
+                this.notifyOfBounce();
             }
             if (this.position.y - this.r <= 0) {
                 this.position.y = this.r;
                 this.velocity.y = -this.velocity.y;
+                this.notifyOfBounce();
             }
             if (this.position.y + this.r >= this.gameCanvas.canvas.height) {
                 this.position.y = this.gameCanvas.canvas.height - this.r;
                 this.velocity.y = -this.velocity.y;
+                this.notifyOfBounce();
+            }
+        }
+
+        private notifyOfBounce() {
+            if (this.eventBus) {
+                this.eventBus.broadcast(this, MovingObject.BOUNCE_EVENT, {
+                    position: this.position,
+                    velocity: this.velocity
+                });
             }
         }
 

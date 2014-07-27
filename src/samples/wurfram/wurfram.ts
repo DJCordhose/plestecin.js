@@ -9,11 +9,10 @@
 
 module Wurfram {
     import mixin = Plestecin.Util.mixin;
-    import BallConfig = Plestecin.PhysicalObjectConfig;
     import MovingObjectConfig = Plestecin.MovingObjectConfig;
 
-    export class Player extends Balls.Player implements Plestecin.Sprite {
-        constructor(assetRegistry: Plestecin.AssetRegistry, gameCanvas: Plestecin.GameCanvas, keyboadControl: Plestecin.KeyboardControl) {
+    export class Player extends Balls.Player {
+        constructor(eventBus: GameEventBus, assetRegistry: Plestecin.AssetRegistry, gameCanvas: Plestecin.GameCanvas, keyboadControl: Plestecin.KeyboardControl) {
             var config =
             {
                 image: assetRegistry.images['wurfram'],
@@ -31,15 +30,9 @@ module Wurfram {
                 acceleration: 0.05,
                 friction: 0.0001
             };
-            super(gameCanvas, keyboadControl, config);
-            this.init(config);
-        }
-
-        init(config: MovingObjectConfig) {
+            super(eventBus, gameCanvas, keyboadControl, config);
             Plestecin.Sprite.call(this, this.gameCanvas, config);
-            super.init(config);
         }
-
     }
     mixin(Player, Plestecin.Sprite);
 

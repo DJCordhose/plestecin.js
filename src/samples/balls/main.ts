@@ -7,7 +7,7 @@
 module Balls {
     var game = new BallGame();
     game.start(() => {
-        var player = new Player(game.gameCanvas, game.keyboardControl, {
+        var player = new Player(game.engine.eventBus, game.gameCanvas, game.keyboardControl, {
             r: 10,
             color: 'blue',
             maxSpeed: 5,

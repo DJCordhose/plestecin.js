@@ -5,6 +5,12 @@
 /// <reference path="../modules/keyboardControl.ts" />
 /// <reference path="../modules/assetRegistry.ts" />
 
+// Needed to access audiocontext via window - required by Safari (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+interface Window {
+    AudioContext: new () => AudioContext
+    webkitAudioContext: new () => AudioContext
+}
+
 module Plestecin {
     export class Game implements GameObject {
         engine: Engine;
@@ -34,11 +40,6 @@ module Plestecin {
             this.engine.registerPlugin(this.physicsEngine);
             this.initAudioContext();
         }
-
-        update() {
-
-        }
-
 
         render() {
             var highScoreKey = this.gameName + '-highscore';
@@ -81,13 +82,15 @@ module Plestecin {
             window.onload = () => this.engine.start(init);
         }
 
+        // http://updates.html5rocks.com/2014/07/Web-Audio-Changes-in-m36
+        // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
         private initAudioContext() {
             try {
-                if (webkitAudioContext || AudioContext) {
-                    this.audioContext = new (webkitAudioContext || AudioContext)();
+                // Safari needs window prefix
+                if (window.AudioContext || window.webkitAudioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
                 }
-            }
-            catch (e) {
+            } catch (e) {
                 console.warn('Web Audio API is not supported in this browser');
                 console.dir(e);
             }
@@ -132,7 +135,7 @@ module Plestecin {
             if (this.audioContext) {
                 frequency = frequency || 55;
                 var oscillator = this.createOscillator(frequency);
-                oscillator.type = oscillator.SAWTOOTH;
+                oscillator.type = "sawtooth";
                 oscillator.start(this.audioContext.currentTime); // play now
                 oscillator.stop(this.audioContext.currentTime + 0.5); // seconds
             }

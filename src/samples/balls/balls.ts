@@ -15,12 +15,11 @@ module Balls {
     import KeyboardControl = Plestecin.KeyboardControl;
     import PhysicsEngine = Plestecin.PhysicsEngine;
 
-    export class Player extends MovingObject implements GameObject /*, Ball */ {
+    export class Player extends MovingObject implements GameObject {
         color: string;
-        drawOnCanvas: () => void;
 
-        constructor(gameCanvas: GameCanvas, private keyboadControl: KeyboardControl, config: BallConfig) {
-            super(gameCanvas, config);
+        constructor(eventBus: GameEventBus, gameCanvas: GameCanvas, private keyboadControl: KeyboardControl, config: BallConfig) {
+            super(eventBus, gameCanvas, config);
             this.color = config.color;
         }
 
