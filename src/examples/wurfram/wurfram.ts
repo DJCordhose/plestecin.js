@@ -13,6 +13,7 @@ module Wurfram {
     import Sprite = Plestecin.Sprite;
     import Engine = Plestecin.Engine;
     import Game = Plestecin.Game;
+    import PhysicsEngine = Plestecin.PhysicsEngine;
 
     export class Player extends Balls.Player {
         constructor(eventBus: GameEventBus, assetRegistry: Plestecin.AssetRegistry, gameCanvas: Plestecin.GameCanvas, keyboadControl: Plestecin.KeyboardControl) {
@@ -53,6 +54,7 @@ module Wurfram {
         static PAUSE_STATE = 'pause';
 
         player: Player;
+        private hasHighScore: boolean;
 
         constructor() {
             super("Wurfram");
@@ -70,6 +72,7 @@ module Wurfram {
 
         reset() {
             this.currentScore = 0;
+            this.hasHighScore = undefined;
             // init main state
             this.engine.switchState(Engine.MAIN_STATE_NAME);
             this.engine.resetObjects();
@@ -133,7 +136,7 @@ module Wurfram {
             this.engine.switchState(WurframGame.GAME_OVER_STATE);
             this.engine.addObject({
                 update: (deltaT: number) => {
-                    this.updateHighscore();
+                    if (typeof this.hasHighScore === 'undefined') this.hasHighScore = this.updateHighscore();
                     var currentControl = this.keyboardControl.cursorControl();
                     if ('space' in currentControl) {
                         this.reset();
@@ -141,8 +144,7 @@ module Wurfram {
                 },
                 render: () => {
                     this.print({
-                            // FIXME: Check does not work
-                            text: (this.currentScore === this.currentHighscore()) ? "Great, new high-score. Press Space for new game" : "Game Over. Press Space for new game",
+                            text: this.hasHighScore ? "Great, new high-score. Press Space for new game" : "Game Over. Press Space for new game",
                             fontSize: 36,
                             position: {
                                 x: 300,
@@ -204,15 +206,25 @@ module Wurfram {
                 },
                 r: r
             });
-            this.engine.addObject(rosa);
-            this.physicsEngine.onCollision({
-                object1: rosa,
-                object2: this.player,
-                callback: () => {
-                    this.playSoundBad();
-                    this.engine.switchState(WurframGame.GAME_OVER_STATE);
-                }
-            });
+            // do not add rosa if she might collide with wurfram very soon
+            var playerWithExtendedRadius = {
+                position: {
+                    x: this.player.position.x,
+                    y: this.player.position.y
+                },
+                r: this.player.r * 5
+            };
+            if (!PhysicsEngine.circleCollidesWithCircle(rosa, playerWithExtendedRadius)) {
+                this.engine.addObject(rosa);
+                this.physicsEngine.onCollision({
+                    object1: rosa,
+                    object2: this.player,
+                    callback: () => {
+                        this.playSoundBad();
+                        this.engine.switchState(WurframGame.GAME_OVER_STATE);
+                    }
+                });
+            }
         }
 
         render() {
