@@ -40,7 +40,7 @@ module Wurfram {
     export class WurframGame extends Balls.BallGame {
 
         static sausageLikeliness = 0.1;
-        static SAUSAGE_RADUIS = 10;
+        static SAUSAGE_RADUIS = 20;
 
         static burgerLikeliness = 0.1;
         static rosaLikeliness = 0.01;
@@ -49,7 +49,7 @@ module Wurfram {
             super();
             this.assetRegistry.loadImage('wurfram', 'images/wurfram.png');
             this.assetRegistry.loadImage('rosa', 'images/sausage.png');
-            this.assetRegistry.loadImage('sausage', 'images/sausage.png');
+            this.assetRegistry.loadImage('sausage', 'images/sausage2.png');
             this.assetRegistry.loadImage('burger', 'images/sausage.png');
 
             this.gameName = "Wurfram";
@@ -65,7 +65,7 @@ module Wurfram {
             var sausage = new Sprite(this.gameCanvas, {
                 image: this.assetRegistry.images['sausage'],
                     imageInfo: {
-                        dh: r * 2, dw: r * 2
+                        dh: r * 2, dw: r * 3
                     },
                 position: {
                     x: Math.round(Math.random() * (this.gameCanvas.canvas.width - 4 * r) + 2 * r),

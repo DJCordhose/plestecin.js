@@ -15,13 +15,35 @@ module Plestecin {
         init(eventBus: GameEventBus, success: (gamePlugin: GamePlugin) => void, error: (gamePlugin: GamePlugin, cause: Error) => void);
     }
 
+    interface GameStates {
+        [index: string]: GameState;
+        initial: GameState;
+    }
+
+    interface GameState {
+        objects: GameObject[];
+//        eventBus: GameEventBus;
+    }
+
     export class Engine {
 
-        private objects: GameObject[] = [];
+//        private objects: GameObject[] = [];
         private plugins: GamePlugin[] = [];
         private previousNow = Engine.now();
+        // TODO: Should this be part of of the Game State? If so, how do we update reference to the eventbus from plugins and objects?
         public eventBus = new GameEventBus();
         private stopped = false;
+        private currentState = 'initial';
+        private states: GameStates = {
+            initial: Engine.createState('initial')
+        };
+
+        static createState(name: string) {
+            return {
+                objects: [],
+                eventBus: new GameEventBus()
+            };
+        }
 
         private static now(): number {
             return Date.now() / 10;
@@ -34,7 +56,6 @@ module Plestecin {
 
         static OBJECT_ADD_EVENT = "add";
         static OBJECT_REMOVE_EVENT = "remove";
-
 
         private initPlugins(overallSuccess: () => void, overallError: (gamePlugin: GamePlugin, cause: Error) => void) {
             var pluginCnt = this.plugins.length;
@@ -49,6 +70,10 @@ module Plestecin {
                 };
                 this.plugins.forEach(plugin => plugin.init(this.eventBus, pluginSuccess, overallError));
             }
+        }
+
+        private getCurrentState() {
+            return this.states[this.currentState];
         }
 
         start(init?: () => void) {
@@ -83,21 +108,21 @@ module Plestecin {
             this.previousNow = nextNow;
 
             this.eventBus.broadcast(this, Engine.PRE_UPDATE_EVENT, {deltaT: deltaT});
-            this.objects.forEach(object => object.update && object.update(deltaT));
+            this.getCurrentState().objects.forEach(object => object.update && object.update(deltaT));
             this.eventBus.broadcast(this, Engine.POST_UPDATE_EVENT, {deltaT: deltaT});
 
             this.eventBus.broadcast(this, Engine.PRE_RENDER_EVENT);
-            this.objects.forEach(object => object.render && object.render());
+            this.getCurrentState().objects.forEach(object => object.render && object.render());
             this.eventBus.broadcast(this, Engine.POST_RENDER_EVENT);
         }
 
         addObject(object: GameObject) {
-            this.objects.splice(0, 0, object);
+            this.getCurrentState().objects.splice(0, 0, object);
             this.eventBus.broadcast(this, Engine.OBJECT_ADD_EVENT, object);
         }
 
         removeObject(object: GameObject) {
-            this.objects.splice(this.objects.indexOf(object), 1);
+            this.getCurrentState().objects.splice(this.getCurrentState().objects.indexOf(object), 1);
             this.eventBus.broadcast(this, Engine.OBJECT_REMOVE_EVENT, object);
         }
 
