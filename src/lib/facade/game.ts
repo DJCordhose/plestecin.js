@@ -12,6 +12,15 @@ interface Window {
 }
 
 module Plestecin {
+    export interface GameText {
+        text: string;
+        position: {
+            x: number;
+            y: number;
+        };
+        fontSize: number;
+    }
+
     export class Game implements GameObject {
         engine: Engine;
         currentScore: number = 0;
@@ -24,12 +33,8 @@ module Plestecin {
 
         audioContext;
 
-        constructor(public gameName: string, public description: string, canvasId?: string) {
+        constructor(public gameName: string, public description: string = "", canvasId?: string) {
             this.engine = new Engine();
-            this.init(canvasId);
-        }
-
-        init(canvasId?: string) {
             this.gameCanvas = GameCanvas ? (canvasId ? new GameCanvas({canvasId: canvasId}) : new GameCanvas()) : null;
             this.keyboardControl = KeyboardControl ? new KeyboardControl() : null;
             this.assetRegistry = AssetRegistry ? new AssetRegistry() : null;
@@ -80,6 +85,12 @@ module Plestecin {
 
         start(init: () => void) {
             window.onload = () => this.engine.start(init);
+        }
+
+        print(text: GameText) {
+            this.gameCanvas.context.fillStyle = 'black';
+            this.gameCanvas.context.font = text.fontSize + 'px sans-serif';
+            this.gameCanvas.context.fillText(text.text, text.position.x, text.position.y);
         }
 
         // http://updates.html5rocks.com/2014/07/Web-Audio-Changes-in-m36

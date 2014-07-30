@@ -17,10 +17,11 @@ module Plestecin {
 
     interface GameStates {
         [index: string]: GameState;
-        initial: GameState;
+        main: GameState;
     }
 
-    interface GameState {
+    export interface GameState {
+        name: string;
         objects: GameObject[];
 //        eventBus: GameEventBus;
     }
@@ -33,15 +34,19 @@ module Plestecin {
         // TODO: Should this be part of of the Game State? If so, how do we update reference to the eventbus from plugins and objects?
         public eventBus = new GameEventBus();
         private stopped = false;
-        private currentState = 'initial';
+        private currentState = Engine.MAIN_STATE_NAME;
+
         private states: GameStates = {
-            initial: Engine.createState('initial')
+            main: Engine.initState(Engine.MAIN_STATE_NAME)
         };
 
-        static createState(name: string) {
+        static MAIN_STATE_NAME = 'main';
+
+        static initState(name: string) {
             return {
-                objects: [],
-                eventBus: new GameEventBus()
+                name: name,
+                objects: []
+//                eventBus: new GameEventBus()
             };
         }
 
@@ -72,8 +77,21 @@ module Plestecin {
             }
         }
 
-        private getCurrentState() {
-            return this.states[this.currentState];
+        public addState(state: GameState) {
+            this.states[state.name] = state;
+        }
+
+        public switchState(name: string) {
+            this.currentState = name;
+        }
+
+        public getCurrentState() {
+            var state = this.states[this.currentState];
+            if (!state) {
+                throw new Error("Current state: " + this.currentState + " has not been intialized!")
+            } else {
+                return  state;
+            }
         }
 
         start(init?: () => void) {
