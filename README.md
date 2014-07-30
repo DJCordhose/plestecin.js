@@ -49,6 +49,7 @@ Things for later releases
 -------------------------
 - Double Buffering in Canvas
 - Collision Detection of Circle with Line (for Borders or Boundaries)
+  - http://devmag.org.za/2009/04/17/basic-collision-detection-in-2d-part-2/
 - Mobile Control Plugin
 - Animations (through sprite sheets)
 - Playing of wave audio
