@@ -40,6 +40,8 @@ module Balls {
     mixin(Player, Ball);
 
     export class BallGame extends Game {
+        private gameOver: boolean = false;
+        private description: string;
 
         greenBallLikeliness = 0.1;
         redBallLikeliness = 0.01;
@@ -48,7 +50,8 @@ module Balls {
         private static ballRadius = 10;
 
         constructor() {
-            super('balls', 'Hit green balls and avoid red ones. Accelerate by using cursor keys.');
+            super('balls');
+            this.description = 'Hit green balls and avoid red ones. Accelerate by using cursor keys.';
         }
 
         private createBall(color: string): Ball {
@@ -101,6 +104,26 @@ module Balls {
                 });
 
             }
+        }
+
+        loose() {
+            this.playSoundBad();
+            this.gameOver = true;
+            this.engine.stop();
+        }
+
+        render() {
+            var newHighscore = this.updateHighscore();
+            var text;
+            if (this.gameOver) {
+                text = (newHighscore ? 'Game over, NEW HIGHSCORE: ' : 'Game over, final score: ') + this.currentScore;
+            } else {
+                text = "Score: " + this.currentScore;
+            }
+            this.gameCanvas.context.fillStyle = 'black';
+            this.gameCanvas.context.font = '12px sans-serif';
+            this.gameCanvas.context.fillText(text, 20, this.gameCanvas.canvas.height - 20);
+            this.gameCanvas.context.fillText(this.description + ' Reload page to try again. Current high score: ' + this.currentHighscore(), 20, 20);
         }
 
         update() {

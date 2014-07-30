@@ -144,6 +144,13 @@ module Plestecin {
             this.eventBus.broadcast(this, Engine.OBJECT_REMOVE_EVENT, object);
         }
 
+        resetObjects() {
+            this.getCurrentState().objects.forEach((object) => {
+                this.eventBus.broadcast(this, Engine.OBJECT_REMOVE_EVENT, object);
+            })
+            this.getCurrentState().objects = [];
+        }
+
         registerPlugin(plugin: GamePlugin) {
             if (plugin) {
                 this.plugins.push(plugin);

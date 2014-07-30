@@ -29,10 +29,10 @@
       <root url="file://$PROJECT_DIR$/src/lib/core/util.js" />
       <root url="file://$PROJECT_DIR$/src/lib/modules/assetRegistry.js" />
       <root url="file://$PROJECT_DIR$/src/lib/modules/basicPhysics.js" />
-      <root url="file://$PROJECT_DIR$/src/example/balls/main.js" />
-      <root url="file://$PROJECT_DIR$/src/example/balls/balls.js" />
-      <root url="file://$PROJECT_DIR$/src/example/wurfram/wurfram.js" />
-      <root url="file://$PROJECT_DIR$/src/example/wurfram/main.js" />
+      <root url="file://$PROJECT_DIR$/src/examples/balls/main.js" />
+      <root url="file://$PROJECT_DIR$/src/examples/balls/balls.js" />
+      <root url="file://$PROJECT_DIR$/src/examples/wurfram/wurfram.js" />
+      <root url="file://$PROJECT_DIR$/src/examples/wurfram/main.js" />
       <root url="file://$PROJECT_DIR$/src/lib/core/plestecin.js" />
       <root url="file://$PROJECT_DIR$/src/lib/modules/keyboardControl.js" />
     </CLASSES>

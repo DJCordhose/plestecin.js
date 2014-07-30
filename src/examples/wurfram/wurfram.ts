@@ -42,7 +42,8 @@ module Wurfram {
     export class WurframGame extends Game {
 
         static sausageLikeliness = 0.1;
-        static SAUSAGE_RADUIS = 20;
+        static SAUSAGE_RADIUS = 20;
+        static ROSA_RADIUS = 20;
 
         static burgerLikeliness = 0.1;
         static rosaLikeliness = 0.01;
@@ -56,22 +57,29 @@ module Wurfram {
         constructor() {
             super("Wurfram");
             this.assetRegistry.loadImage('wurfram', 'images/wurfram.png');
-            this.assetRegistry.loadImage('rosa', 'images/sausage.png');
+            this.assetRegistry.loadImage('rosa', 'images/rosa.png');
             this.assetRegistry.loadImage('sausage', 'images/sausage2.png');
             this.assetRegistry.loadImage('burger', 'images/sausage.png');
 
             this.engine.addState(Engine.initState(WurframGame.INTRO_STATE));
             this.engine.addState(Engine.initState(WurframGame.GAME_OVER_STATE));
             this.engine.addState(Engine.initState(WurframGame.PAUSE_STATE));
+
+            this.engine.eventBus.on(Plestecin.MovingObject.BOUNCE_EVENT, () => this.playSound(220, 0.1, 0, 0.15));
         }
 
-        init(player: Player) {
-            this.player = player;
-            this.engine.eventBus.on(Plestecin.MovingObject.BOUNCE_EVENT, () => this.playSound(220, 0.1, 0, 0.15));
-
+        reset() {
+            this.currentScore = 0;
             // init main state
-            this.engine.addObject(player);
+            this.engine.switchState(Engine.MAIN_STATE_NAME);
+            this.engine.resetObjects();
+            this.player = new Player(this.engine.eventBus, this.assetRegistry, this.gameCanvas, this.keyboardControl);
+            this.engine.addObject(this.player);
             this.engine.addObject(this);
+
+        }
+        init() {
+            this.reset();
 
             // init intro state
             this.engine.switchState(WurframGame.INTRO_STATE);
@@ -106,15 +114,48 @@ module Wurfram {
             this.engine.addObject({
                 update: (deltaT: number) => {
                     var currentControl = this.keyboardControl.cursorControl();
-                    if ('any' in currentControl) this.engine.switchState(Engine.MAIN_STATE_NAME);
+                    if ('space' in currentControl) this.engine.switchState(Engine.MAIN_STATE_NAME);
                 },
                 render: () => {
-                    this.print(                    {
-                            text: "Spiel im Pause-Modus. Fortsetzen mit jeder Taste",
+                    this.print({
+                            text: "Spiel im Pause-Modus. Fortsetzen mit der Leertaste",
                             fontSize: 36,
                             position: {
                                 x: 300,
                                 y: 160
+                            }
+                        }
+                    );
+                }
+            });
+
+            // init game over state
+            this.engine.switchState(WurframGame.GAME_OVER_STATE);
+            this.engine.addObject({
+                update: (deltaT: number) => {
+                    this.updateHighscore();
+                    var currentControl = this.keyboardControl.cursorControl();
+                    if ('space' in currentControl) {
+                        this.reset();
+                    }
+                },
+                render: () => {
+                    this.print({
+                            // FIXME: Check does not work
+                            text: (this.currentScore === this.currentHighscore()) ? "Great, new high-score. Press Space for new game" : "Game Over. Press Space for new game",
+                            fontSize: 36,
+                            position: {
+                                x: 300,
+                                y: 160
+                            }
+                        }
+                    );
+                    this.print({
+                            text: "Your score: " + this.currentScore,
+                            fontSize: 36,
+                            position: {
+                                x: 350,
+                                y: 260
                             }
                         }
                     );
@@ -126,7 +167,7 @@ module Wurfram {
         }
 
         createSausage() {
-            var r = WurframGame.SAUSAGE_RADUIS;
+            var r = WurframGame.SAUSAGE_RADIUS;
             var sausage = new Sprite(this.gameCanvas, {
                 image: this.assetRegistry.images['sausage'],
                 imageInfo: {
@@ -150,10 +191,47 @@ module Wurfram {
             });
         }
 
+        createRosa() {
+            var r = WurframGame.ROSA_RADIUS;
+            var rosa = new Sprite(this.gameCanvas, {
+                image: this.assetRegistry.images['rosa'],
+                imageInfo: {
+                    dh: r * 2, dw: r * 3
+                },
+                position: {
+                    x: Math.round(Math.random() * (this.gameCanvas.canvas.width - 4 * r) + 2 * r),
+                    y: Math.round(Math.random() * (this.gameCanvas.canvas.height - 4 * r) + 2 * r)
+                },
+                r: r
+            });
+            this.engine.addObject(rosa);
+            this.physicsEngine.onCollision({
+                object1: rosa,
+                object2: this.player,
+                callback: () => {
+                    this.playSoundBad();
+                    this.engine.switchState(WurframGame.GAME_OVER_STATE);
+                }
+            });
+        }
+
+        render() {
+            var text = "Score: " + this.currentScore + ", current highscore: " + this.currentHighscore();
+            this.print({
+                text: text,
+                fontSize: 18,
+                position: {
+                    x: 25,
+                    y: this.gameCanvas.canvas.height - 20
+                }
+
+            })
+        }
+
         update() {
             if (Math.random() < WurframGame.sausageLikeliness) this.createSausage();
-//            if (Math.random() < this.burgerLikeliness) this.createBurger();
-//            if (Math.random() < this.rosaLikeliness) this.createRosa();
+//            if (Math.random() < WurframGame.burgerLikeliness) this.createBurger();
+            if (Math.random() < WurframGame.rosaLikeliness) this.createRosa();
             var currentControl = this.keyboardControl.cursorControl();
             if ('esc' in currentControl) this.engine.switchState(WurframGame.PAUSE_STATE);
 

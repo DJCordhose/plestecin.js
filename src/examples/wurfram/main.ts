@@ -8,7 +8,6 @@ module Wurfram {
     var game = new WurframGame();
 
     game.start(() => {
-        var player = new Player(game.engine.eventBus, game.assetRegistry, game.gameCanvas, game.keyboardControl);
-        game.init(player);
+        game.init();
     });
 }
