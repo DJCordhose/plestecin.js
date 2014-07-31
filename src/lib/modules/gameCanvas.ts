@@ -94,8 +94,8 @@ module Plestecin {
     }
 
     export class Sprite extends PhysicalObject {
-        private imageInfo: ImageInfo;
-        private image: HTMLImageElement;
+        imageInfo: ImageInfo;
+        image: HTMLImageElement;
 
         constructor(public gameCanvas: GameCanvas, config: SpriteConfig) {
             super(config);
