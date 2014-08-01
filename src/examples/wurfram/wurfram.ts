@@ -69,7 +69,7 @@ module Wurfram {
 
         static SAUSAGE_RADIUS = 20;
         static BURGER_RADIUS = 20;
-        static PIZZA_RADIUS = 20;
+        static PIZZA_RADIUS = 30;
         static ROSA_RADIUS = 20;
 
         static SAUSAGE_SCORE = 1;
@@ -156,8 +156,27 @@ module Wurfram {
                             text: "Start game using space",
                             fontSize: 36,
                             position: {
-                                x: 400,
+                                x: 500,
                                 y: 400
+                            }
+                        }
+                    );
+                    this.print({
+                            text: "Programming by Olli",
+                            fontSize: 36,
+                            position: {
+                                x: 400,
+                                y: 500
+                            }
+                        }
+                    );
+
+                    this.print({
+                            text: "Game graphics by Charlie, Olli, Jim and Tom Verweyen",
+                            fontSize: 36,
+                            position: {
+                                x: 400,
+                                y: 600
                             }
                         }
                     );
@@ -173,7 +192,7 @@ module Wurfram {
                 },
                 render: () => {
                     this.print({
-                            text: "Spiel im Pause-Modus. Fortsetzen mit der Leertaste",
+                            text: "Pause-Mode. Continue using space key",
                             fontSize: 36,
                             position: {
                                 x: 300,
@@ -214,7 +233,7 @@ module Wurfram {
                         }
                     );
                     this.print({
-                            text: "Wurframs gain in weight: " + this.player.weightGain() + " kg",
+                            text: "Wurfram's gain in weight: " + this.player.weightGain() + " kg",
                             fontSize: 36,
                             position: {
                                 x: 350,
