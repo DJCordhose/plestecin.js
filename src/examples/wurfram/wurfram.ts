@@ -106,15 +106,19 @@ module Wurfram {
         }
 
         reset() {
-            this.currentScore = 0;
-            this.hasHighScore = undefined;
-            // init main state
+            var oldState = this.engine.currentState;
             this.engine.switchState(Engine.MAIN_STATE_NAME);
             this.engine.resetObjects();
             this.player = new Player(this.engine.eventBus, this.assetRegistry, this.gameCanvas, this.keyboardControl);
             this.engine.addObject(this.player);
             this.engine.addObject(this);
+            this.engine.switchState(oldState);
+        }
 
+        restart() {
+            this.currentScore = 0;
+            this.hasHighScore = undefined;
+            this.engine.switchState(Engine.MAIN_STATE_NAME);
         }
 
         init() {
@@ -153,11 +157,19 @@ module Wurfram {
                         }
                     });
                     this.print({
+                        text: "The more you eat, the fatter Wurfram gets, the harder he will be to control",
+                        fontSize: 36,
+                        position: {
+                            x: 100,
+                            y: 400
+                        }
+                    });
+                    this.print({
                             text: "Start game using space",
                             fontSize: 36,
                             position: {
                                 x: 500,
-                                y: 400
+                                y: 500
                             }
                         }
                     );
@@ -166,7 +178,7 @@ module Wurfram {
                             fontSize: 36,
                             position: {
                                 x: 400,
-                                y: 500
+                                y: 600
                             }
                         }
                     );
@@ -176,7 +188,7 @@ module Wurfram {
                             fontSize: 36,
                             position: {
                                 x: 400,
-                                y: 600
+                                y: 700
                             }
                         }
                     );
@@ -210,7 +222,7 @@ module Wurfram {
                     if (typeof this.hasHighScore === 'undefined') this.hasHighScore = this.updateHighscore();
                     var currentControl = this.keyboardControl.cursorControl();
                     if ('space' in currentControl) {
-                        this.reset();
+                        this.restart();
                     }
                 },
                 render: () => {
@@ -303,6 +315,7 @@ module Wurfram {
                     object2: this.player,
                     callback: () => {
                         this.playSoundBad();
+                        this.reset();
                         this.engine.switchState(WurframGame.GAME_OVER_STATE);
                     }
                 });

@@ -34,7 +34,7 @@ module Plestecin {
         // TODO: Should this be part of of the Game State? If so, how do we update reference to the eventbus from plugins and objects?
         public eventBus = new GameEventBus();
         private stopped = false;
-        private currentState = Engine.MAIN_STATE_NAME;
+        public currentState = Engine.MAIN_STATE_NAME;
 
         private states: GameStates = {
             main: Engine.initState(Engine.MAIN_STATE_NAME)
@@ -85,7 +85,7 @@ module Plestecin {
             this.currentState = name;
         }
 
-        public getCurrentState() {
+        private getCurrentState() {
             var state = this.states[this.currentState];
             if (!state) {
                 throw new Error("Current state: " + this.currentState + " has not been intialized!")

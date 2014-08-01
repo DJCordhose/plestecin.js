@@ -14,18 +14,28 @@ Why the name?
 
 Have a look at this [Twitter discussion](https://twitter.com/BjoernKaiser/status/481437566550695936)
 
+TypeScript
+----------
+
+The game engine has been written entirely in TypeScript. You can program your own game in TypeScript as well or just
+use the library as JavaScript and do your own coding in JavaScript as well.
+
 Examples
 --------
 
+There are a couple of examples in the *src/examples* folder.
+- balls: very simple, but complete game, illustrates game control, logic and physics
+- wurfram: more complex, has game states and sprites, and more complex game logic
 
 Game Loop
 ---------
 
-The very core of the game engine is the game loop, a plugin system, an abstract concept of a game object and a means of 
-communication between those parts. That's it.
+The very core of the game engine is the game loop to be found in *plestecin.ts*. Based on that core there is a plugin system, 
+an abstract concept of a game object, game states and a means of communication between parts of the game. That's it.
  
 Plugins
 -------
+
 
 Game Objects
 ------------
@@ -33,22 +43,25 @@ Game Objects
 Communication between parts
 ---------------------------
 
-An eventbus is in place that allows components to communicate with each other without being tightly coupled.
+An eventbus (defined in *util.ts*) is in place that allows components to communicate with each other without being tightly coupled.
 
 States
 ------
-
+- Different phases or levels of the game are represented as states
+- A state can represent a start screen and a game over screen
+- Different levels or stages can also be states
+- States are thus a means of organizing and structuring your game
 - Each state has a number of game objects associated
-- States can be switched on every tick
+- States can be switched on every tick of the game loop
 - States can be accessed using their names
 - default state always present, name "main"
 
-
 Roadmap to first 0.1 release
 ----------------------------
-- Port of raw-game
+- Port of raw-game (as hello world)
+- Port of snake-game
 - Rudimentary description of architecture in Readme.md
-- Add build script (grunt? gulp?)
+- Add build script (grunt? gulp?) creating JavaScript and .d.ts files for external declarations
 
 Things for later releases
 -------------------------
