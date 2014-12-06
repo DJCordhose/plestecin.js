@@ -177,17 +177,17 @@ module Wurfram {
                             text: "Programming by Olli",
                             fontSize: 36,
                             position: {
-                                x: 400,
+                                x: 500,
                                 y: 600
                             }
                         }
                     );
 
                     this.print({
-                            text: "Game graphics by Charlie, Olli, Jim and Tom Verweyen",
+                            text: "Game design and graphics by Charlie, Olli, Jim and Tom Verweyen",
                             fontSize: 36,
                             position: {
-                                x: 400,
+                                x: 100,
                                 y: 700
                             }
                         }
@@ -244,6 +244,8 @@ module Wurfram {
                             }
                         }
                     );
+                    // TODO: seems like player is reset before we display this, as waight gain is always 0 and gravity is reset to initial
+                    /*
                     this.print({
                             text: "Wurfram's gain in weight: " + this.player.weightGain() + " kg",
                             fontSize: 36,
@@ -253,6 +255,7 @@ module Wurfram {
                             }
                         }
                     );
+                    */
                 }
             });
 
