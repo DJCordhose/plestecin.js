@@ -91,7 +91,7 @@ module Pose {
         private hasHighScore: boolean;
 
         constructor() {
-            super("Pose");
+            super("Pose", "field");
             this.assetRegistry.loadImage('player', 'images/wurfram.png');
             this.assetRegistry.loadImage('enemy', 'images/rosa.png');
             this.assetRegistry.loadImage('food1', 'images/sausage2.png');

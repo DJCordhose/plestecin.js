@@ -3,12 +3,38 @@
 <head>
     <title>Pose</title>
     <style>
-        body {
-            margin: 0px;
+        #control {
+            height: 100%;
+            width: 20%;
+            float: left; 
+        }
+        #game {
+            /* margin-left: 100px; */
+            height: 100%;
+            width: 80%;
+            float: right;   
+            background-color: blue;
+        }
+        #all {
+            height: 100%;
+            width: 100%;
+        }
+        #field {
+            height: 800px;
+            width: 1000px;
         }
     </style>
 </head>
 <body>
+    <div id='all'>
+    <div id='control'>
+        <div><canvas id="canvas"></canvas></div>
+        <div id="label-container"></div>
+    </div>
+    <div id='game'>
+        <canvas id='field'></canvas>
+    </div>
+    </div>
 <script src="../../lib/core/util.js"></script>
 <script src="../../lib/core/plestecin.js"></script>
 <script src="../../lib/modules/assetRegistry.js"></script>
@@ -19,5 +45,18 @@
 <script src="../balls/balls.js"></script>
 <script src="pose.js"></script>
 <script src="main.js"></script>
+
+<script src="ml/tf.min.js"></script>
+<script src="ml/teachablemachine-pose.min.js"></script>
+
+<script type="text/javascript">
+const URL = "./ml/model/";
+</script>
+
+<script src="ml/predict.js"></script>
+<script type="text/javascript">
+    // init()
+</script>
+
 </body>
 </html>
