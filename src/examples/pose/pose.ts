@@ -7,6 +7,10 @@
 /// <reference path="../../lib/modules/gameCanvas.ts" />
 /// <reference path="../balls/balls.ts" />
 
+interface Window {
+    prediction: string;
+}
+
 module Pose {
     import mixin = Plestecin.Util.mixin;
     import MovingObjectConfig = Plestecin.MovingObjectConfig;
@@ -40,10 +44,26 @@ module Pose {
                 friction: 0.0001
             };
             super(eventBus, gameCanvas, keyboadControl, config);
-            Plestecin.Sprite.call(this, this.gameCanvas, config);
+            Sprite.call(this, this.gameCanvas, config);
             this.initialWeight = 80;
             this.initialGravity = this.gravity;
         }
+
+        accelerateViaPosition(deltaT) {
+            const posePrediction = window.prediction;
+            console.log(posePrediction);
+            if ('up' === posePrediction) this.velocity.y -= this.acceleration * deltaT;
+            if ('down' === posePrediction) this.velocity.y += this.acceleration * deltaT;
+            if ('left' === posePrediction) this.velocity.x -= this.acceleration * deltaT;
+            if ('right' === posePrediction) this.velocity.x += this.acceleration * deltaT;
+        }
+
+        update(deltaT: number) {
+            super.update(deltaT)
+            this.accelerateViaPosition(deltaT);
+
+        }
+
 
         grow(amount: number) {
             //            const addedsize = amount / 20;
