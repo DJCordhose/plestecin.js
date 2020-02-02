@@ -1,4 +1,3 @@
-/// <reference path="../ext/waa.d.ts" />
 /// <reference path="../core/plestecin.ts" />
 /// <reference path="../modules/basicPhysics.ts" />
 /// <reference path="../modules/gameCanvas.ts" />
@@ -21,7 +20,7 @@ module Plestecin {
         fontSize: number;
     }
 
-    export class Game implements GameObject {
+    export class Game /* implements GameObject */ {
         engine: Engine;
         currentScore: number = 0;
         gameCanvas: GameCanvas;

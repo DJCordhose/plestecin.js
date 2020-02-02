@@ -74,7 +74,7 @@ module Plestecin {
 
     }
 
-    export class PhysicalObject implements GameObject {
+    export class PhysicalObject /* implements GameObject */ {
         position: {
             x: number;
             y: number;

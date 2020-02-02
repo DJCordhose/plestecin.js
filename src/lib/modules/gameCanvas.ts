@@ -55,7 +55,7 @@ module Plestecin {
         }
     }
 
-    export interface BallConfig extends PhysicalObject {
+    export interface BallConfig extends MovingObjectConfig {
         color: string;
     }
 
