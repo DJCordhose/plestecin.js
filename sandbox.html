@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Sandbox</title>
+        <script>
+            class Olli {
+                constructor() {
+                    this.name = 'Olli'
+                }
+            }
+        
+            class Opa extends Olli{
+                constructor() {
+                    super()
+                    this.type = 'Opa'
+                    // how?
+                    Olli.constructor.call(this)
+                }
+            }
+        
+            const opa = new Opa()
+            console.log(opa.name)
+            console.log(opa.type)
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>

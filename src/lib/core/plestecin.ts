@@ -88,7 +88,7 @@ module Plestecin {
         private getCurrentState() {
             var state = this.states[this.currentState];
             if (!state) {
-                throw new Error("Current state: " + this.currentState + " has not been intialized!")
+                throw new Error("Current state: " + this.currentState + " has not been initialized!")
             } else {
                 return  state;
             }

@@ -6,7 +6,8 @@
   "author": "Oliver Zeigermann <oliver.zeigermann@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "compile": "tsc"
+    "compile": "tsc",
+    "compile:watch": "tsc -w"
   },
   "devDependencies": {
     "typescript": "^3.7.5"
