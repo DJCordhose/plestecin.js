@@ -8,12 +8,12 @@
                 }
             }
         
-            class Opa extends Olli{
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+            class Opa {
                 constructor() {
-                    super()
                     this.type = 'Opa'
                     // how?
-                    Olli.constructor.call(this)
+                    Olli.call(this)
                 }
             }
         

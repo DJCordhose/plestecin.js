@@ -54,17 +54,17 @@ module Plestecin {
         }
 
         currentHighscore() {
-            var highScoreKey = this.gameName + '-highscore';
+            const highScoreKey = this.gameName + '-highscore';
             return localStorage.getItem(highScoreKey) || 0;
         }
 
         setNewHighscore() {
-            var highScoreKey = this.gameName + '-highscore';
+            const highScoreKey = this.gameName + '-highscore';
             localStorage.setItem(highScoreKey, "" + this.currentScore);
         }
 
         updateHighscore() {
-            var highScore = this.currentHighscore();
+            const highScore = this.currentHighscore();
             if (this.currentScore > highScore) {
                 this.setNewHighscore();
                 return true;
@@ -88,12 +88,12 @@ module Plestecin {
         }
 
         createOscillator(frequency: number, gain?: number) {
-            var oscillator = this.audioContext.createOscillator(); // Oscillator defaults to sine wave
+            const oscillator = this.audioContext.createOscillator(); // Oscillator defaults to sine wave
             oscillator.type = oscillator.SQUARE;
             oscillator.frequency.value = frequency; // in hertz
 
             //    Create a gain node.
-            var gainNode = this.audioContext.createGain();
+            const gainNode = this.audioContext.createGain();
             // Connect the source to the gain node.
             oscillator.connect(gainNode);
             // Connect the gain node to the destination.
@@ -105,7 +105,7 @@ module Plestecin {
         }
 
         playSound(frequency, duration, type, gain) {
-            var oscillator = this.createOscillator(frequency, gain);
+            const oscillator = this.createOscillator(frequency, gain);
             if (typeof type != 'undefined') {
                 oscillator.type = type;
             }
@@ -116,7 +116,7 @@ module Plestecin {
         playSoundGood(frequency?: number) {
             if (this.audioContext) {
                 frequency = frequency || 440;
-                var oscillator = this.createOscillator(frequency);
+                const oscillator = this.createOscillator(frequency);
                 oscillator.start(this.audioContext.currentTime); // play now
                 oscillator.stop(this.audioContext.currentTime + 0.1); // seconds
             }
@@ -125,7 +125,7 @@ module Plestecin {
         playSoundBad(frequency?: number) {
             if (this.audioContext) {
                 frequency = frequency || 55;
-                var oscillator = this.createOscillator(frequency);
+                const oscillator = this.createOscillator(frequency);
                 oscillator.type = "sawtooth";
                 oscillator.start(this.audioContext.currentTime); // play now
                 oscillator.stop(this.audioContext.currentTime + 0.5); // seconds
