@@ -67,16 +67,16 @@ module Pose {
 
     export class PoseGame extends Game {
 
-        static FOOD1_RADIUS = 20;
-        static FOOD2_RADIUS = 30;
-        static FOOD3_RADIUS = 20;
+        static FOOD1_RADIUS = 25;
+        static FOOD2_RADIUS = 20;
+        static FOOD3_RADIUS = 15;
         static ENEMY_RADIUS = 20;
 
         static FOOD1_SCORE = 1;
         static FOOD2_SCORE = PoseGame.FOOD1_SCORE * 2;
         static FOOD3_SCORE = PoseGame.FOOD1_SCORE * 5;
 
-        static likelinessFood3 = 0.005;
+        static likelinessFood3 = 0.001;
         static likelinessFood2 = PoseGame.likelinessFood3 * 2;
         static likelinessFood1 = PoseGame.likelinessFood2 * 2;
 
@@ -93,10 +93,10 @@ module Pose {
         constructor() {
             super("Pose", "field");
             this.assetRegistry.loadImage('player', 'images/wurfram.png');
-            this.assetRegistry.loadImage('enemy', 'images/rosa.png');
-            this.assetRegistry.loadImage('food1', 'images/sausage2.png');
-            this.assetRegistry.loadImage('food2', 'images/burger-tom.png');
-            this.assetRegistry.loadImage('food3', 'images/pizza-tom.png');
+            this.assetRegistry.loadImage('enemy', 'images/apple.png');
+            this.assetRegistry.loadImage('food1', 'images/beer-gold.png');
+            this.assetRegistry.loadImage('food2', 'images/wurst.png');
+            this.assetRegistry.loadImage('food3', 'images/pizza.png');
 
             this.engine.addState(Engine.initState(PoseGame.INTRO_STATE));
             this.engine.addState(Engine.initState(PoseGame.GAME_OVER_STATE));
@@ -232,7 +232,7 @@ module Pose {
             const enemy = new Sprite(this.gameCanvas, {
                 image: this.assetRegistry.images['enemy'],
                 imageInfo: {
-                    dh: r * 2, dw: r * 3
+                    dh: r * 2, dw: r * 2
                 },
                 position: {
                     x: Math.round(Math.random() * (this.gameCanvas.canvas.width - 4 * r) + 2 * r),
@@ -283,14 +283,14 @@ module Pose {
         update() {
             if (Math.random() < PoseGame.likelinessFood1)
                 this.createFood('food1', PoseGame.FOOD1_RADIUS, PoseGame.FOOD1_SCORE, {
-                    x: 3, y: 2
+                    x: 2, y: 2
                 });
             if (Math.random() < PoseGame.likelinessFood3)
-                this.createFood('food2', PoseGame.FOOD3_RADIUS, PoseGame.FOOD3_SCORE, {
-                    x: 3, y: 2
+                this.createFood('food3', PoseGame.FOOD3_RADIUS, PoseGame.FOOD3_SCORE, {
+                    x: 2, y: 2
                 });
             if (Math.random() < PoseGame.likelinessFood2)
-                this.createFood('food3', PoseGame.FOOD2_RADIUS, PoseGame.FOOD2_SCORE, {
+                this.createFood('food2', PoseGame.FOOD2_RADIUS, PoseGame.FOOD2_SCORE, {
                     x: 2, y: 2
                 });
             if (Math.random() < PoseGame.enemyLikeliness) this.createEnemy();

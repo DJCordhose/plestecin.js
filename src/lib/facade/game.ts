@@ -32,7 +32,7 @@ module Plestecin {
 
         constructor(public gameName: string, canvasId?: string) {
             this.engine = new Engine();
-            this.gameCanvas = GameCanvas ? (canvasId ? new GameCanvas({canvasId: canvasId}) : new GameCanvas()) : null;
+            this.gameCanvas = GameCanvas ? (canvasId ? new GameCanvas({canvasId: canvasId, width: 1000, height: 800}) : new GameCanvas()) : null;
             this.keyboardControl = KeyboardControl ? new KeyboardControl() : null;
             this.assetRegistry = AssetRegistry ? new AssetRegistry() : null;
             this.physicsEngine = PhysicsEngine ? new PhysicsEngine() : null;
