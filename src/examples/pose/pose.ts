@@ -92,15 +92,15 @@ module Pose {
         static FOOD3_RADIUS = 15;
         static ENEMY_RADIUS = 20;
 
-        static FOOD1_SCORE = 1;
+        static FOOD1_SCORE = 2;
         static FOOD2_SCORE = PoseGame.FOOD1_SCORE * 2;
         static FOOD3_SCORE = PoseGame.FOOD1_SCORE * 5;
 
-        static likelinessFood3 = 0.001;
+        static likelinessFood3 = 0.002;
         static likelinessFood2 = PoseGame.likelinessFood3 * 2;
-        static likelinessFood1 = PoseGame.likelinessFood2 * 2;
+        static likelinessFood1 = PoseGame.likelinessFood2 * 3;
 
-        static enemyLikeliness = 0.001;
+        static enemyLikeliness = 0.002;
 
         static INTRO_STATE = 'intro';
         static MAIN_STATE = Engine.MAIN_STATE_NAME;
@@ -114,9 +114,9 @@ module Pose {
             super("Pose", "field");
             this.assetRegistry.loadImage('player', 'images/wurfram.png');
             this.assetRegistry.loadImage('enemy', 'images/apple.png');
-            this.assetRegistry.loadImage('food1', 'images/beer-gold.png');
+            this.assetRegistry.loadImage('food1', 'images/pizza.png');
             this.assetRegistry.loadImage('food2', 'images/wurst.png');
-            this.assetRegistry.loadImage('food3', 'images/pizza.png');
+            this.assetRegistry.loadImage('food3', 'images/beer-gold.png');
 
             this.engine.addState(Engine.initState(PoseGame.INTRO_STATE));
             this.engine.addState(Engine.initState(PoseGame.GAME_OVER_STATE));
@@ -286,7 +286,7 @@ module Pose {
             const text = "Score: " + this.currentScore + ", current highscore: " + this.currentHighscore();
             this.print({
                 text: text,
-                fontSize: 18,
+                fontSize: 36,
                 position: {
                     x: 25,
                     y: this.gameCanvas.canvas.height - 20
