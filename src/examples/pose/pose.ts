@@ -52,10 +52,10 @@ module Pose {
         accelerateViaPosition(deltaT) {
             const posePrediction = window.prediction;
             console.log(posePrediction);
-            if ('up' === posePrediction) this.velocity.y -= this.acceleration * deltaT;
-            if ('down' === posePrediction) this.velocity.y += this.acceleration * deltaT;
-            if ('left' === posePrediction) this.velocity.x -= this.acceleration * deltaT;
-            if ('right' === posePrediction) this.velocity.x += this.acceleration * deltaT;
+            if ('up' === posePrediction) this.velocity.y -= this.acceleration / 2 * deltaT ;
+            if ('down' === posePrediction) this.velocity.y += this.acceleration / 2  * deltaT;
+            if ('left' === posePrediction) this.velocity.x -= this.acceleration / 2  * deltaT;
+            if ('right' === posePrediction) this.velocity.x += this.acceleration / 2  * deltaT;
         }
 
         update(deltaT: number) {
@@ -96,11 +96,11 @@ module Pose {
         static FOOD2_SCORE = PoseGame.FOOD1_SCORE * 2;
         static FOOD3_SCORE = PoseGame.FOOD1_SCORE * 5;
 
-        static likelinessFood3 = 0.002;
+        static likelinessFood3 = 0.001;
         static likelinessFood2 = PoseGame.likelinessFood3 * 2;
         static likelinessFood1 = PoseGame.likelinessFood2 * 3;
 
-        static enemyLikeliness = 0.002;
+        static enemyLikeliness = 0.001;
 
         static INTRO_STATE = 'intro';
         static MAIN_STATE = Engine.MAIN_STATE_NAME;

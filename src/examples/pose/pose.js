@@ -56,13 +56,13 @@ var Pose;
             var posePrediction = window.prediction;
             console.log(posePrediction);
             if ('up' === posePrediction)
-                this.velocity.y -= this.acceleration * deltaT;
+                this.velocity.y -= this.acceleration / 2 * deltaT;
             if ('down' === posePrediction)
-                this.velocity.y += this.acceleration * deltaT;
+                this.velocity.y += this.acceleration / 2 * deltaT;
             if ('left' === posePrediction)
-                this.velocity.x -= this.acceleration * deltaT;
+                this.velocity.x -= this.acceleration / 2 * deltaT;
             if ('right' === posePrediction)
-                this.velocity.x += this.acceleration * deltaT;
+                this.velocity.x += this.acceleration / 2 * deltaT;
         };
         Player.prototype.update = function (deltaT) {
             _super.prototype.update.call(this, deltaT);
@@ -290,10 +290,10 @@ var Pose;
         PoseGame.FOOD1_SCORE = 2;
         PoseGame.FOOD2_SCORE = PoseGame.FOOD1_SCORE * 2;
         PoseGame.FOOD3_SCORE = PoseGame.FOOD1_SCORE * 5;
-        PoseGame.likelinessFood3 = 0.002;
+        PoseGame.likelinessFood3 = 0.001;
         PoseGame.likelinessFood2 = PoseGame.likelinessFood3 * 2;
         PoseGame.likelinessFood1 = PoseGame.likelinessFood2 * 3;
-        PoseGame.enemyLikeliness = 0.002;
+        PoseGame.enemyLikeliness = 0.001;
         PoseGame.INTRO_STATE = 'intro';
         PoseGame.MAIN_STATE = Engine.MAIN_STATE_NAME;
         PoseGame.GAME_OVER_STATE = 'game_over';
