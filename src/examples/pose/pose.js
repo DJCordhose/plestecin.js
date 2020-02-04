@@ -55,14 +55,15 @@ var Pose;
         Player.prototype.accelerateViaPosition = function (deltaT) {
             var posePrediction = window.prediction;
             console.log(posePrediction);
+            var factor = 1;
             if ('up' === posePrediction)
-                this.velocity.y -= this.acceleration / 2 * deltaT;
+                this.velocity.y -= this.acceleration / factor * deltaT;
             if ('down' === posePrediction)
-                this.velocity.y += this.acceleration / 2 * deltaT;
+                this.velocity.y += this.acceleration / factor * deltaT;
             if ('left' === posePrediction)
-                this.velocity.x -= this.acceleration / 2 * deltaT;
+                this.velocity.x -= this.acceleration / factor * deltaT;
             if ('right' === posePrediction)
-                this.velocity.x += this.acceleration / 2 * deltaT;
+                this.velocity.x += this.acceleration / factor * deltaT;
         };
         Player.prototype.update = function (deltaT) {
             _super.prototype.update.call(this, deltaT);
@@ -126,10 +127,13 @@ var Pose;
                     var currentControl = _this.keyboardControl.cursorControl();
                     if ('space' in currentControl)
                         _this.engine.switchState(Engine.MAIN_STATE_NAME);
+                    var posePrediction = window.prediction;
+                    if ('up' === posePrediction)
+                        _this.engine.switchState(Engine.MAIN_STATE_NAME);
                 },
                 render: function () {
                     _this.print({
-                        text: "Hit Space to start.",
+                        text: "Raise both hands to start.",
                         fontSize: 36,
                         position: {
                             x: 100,
@@ -167,10 +171,13 @@ var Pose;
                     if ('space' in currentControl) {
                         _this.restart();
                     }
+                    var posePrediction = window.prediction;
+                    if ('up' === posePrediction)
+                        _this.restart();
                 },
                 render: function () {
                     _this.print({
-                        text: _this.hasHighScore ? "Great, new high-score. Press Space for new game" : "Game Over. Press Space for new game",
+                        text: _this.hasHighScore ? "Great, new high-score. Raise both hands for new game" : "Game Over. Raise both hands for new game",
                         fontSize: 36,
                         position: {
                             x: 300,

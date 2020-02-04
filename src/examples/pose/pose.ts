@@ -52,10 +52,11 @@ module Pose {
         accelerateViaPosition(deltaT) {
             const posePrediction = window.prediction;
             console.log(posePrediction);
-            if ('up' === posePrediction) this.velocity.y -= this.acceleration / 2 * deltaT ;
-            if ('down' === posePrediction) this.velocity.y += this.acceleration / 2  * deltaT;
-            if ('left' === posePrediction) this.velocity.x -= this.acceleration / 2  * deltaT;
-            if ('right' === posePrediction) this.velocity.x += this.acceleration / 2  * deltaT;
+            const factor = 1;
+            if ('up' === posePrediction) this.velocity.y -= this.acceleration / factor * deltaT ;
+            if ('down' === posePrediction) this.velocity.y += this.acceleration / factor  * deltaT;
+            if ('left' === posePrediction) this.velocity.x -= this.acceleration / factor  * deltaT;
+            if ('right' === posePrediction) this.velocity.x += this.acceleration / factor  * deltaT;
         }
 
         update(deltaT: number) {
@@ -150,10 +151,12 @@ module Pose {
                 update: (deltaT: number) => {
                     const currentControl = this.keyboardControl.cursorControl();
                     if ('space' in currentControl) this.engine.switchState(Engine.MAIN_STATE_NAME);
+                    const posePrediction = window.prediction;
+                    if ('up' === posePrediction) this.engine.switchState(Engine.MAIN_STATE_NAME);
                 },
                 render: () => {
                     this.print({
-                        text: "Hit Space to start.",
+                        text: "Raise both hands to start.",
                         fontSize: 36,
                         position: {
                             x: 100,
@@ -193,10 +196,13 @@ module Pose {
                     if ('space' in currentControl) {
                         this.restart();
                     }
+                    const posePrediction = window.prediction;
+                    if ('up' === posePrediction) this.restart();
+
                 },
                 render: () => {
                     this.print({
-                        text: this.hasHighScore ? "Great, new high-score. Press Space for new game" : "Game Over. Press Space for new game",
+                        text: this.hasHighScore ? "Great, new high-score. Raise both hands for new game" : "Game Over. Raise both hands for new game",
                         fontSize: 36,
                         position: {
                             x: 300,
