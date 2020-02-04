@@ -49,10 +49,15 @@ async function predict() {
     for (let i = 0; i < maxPredictions; i++) {
         const className = prediction[i].className
         const probability = prediction[i].probability
+        let isMax = false;
         if (probability > 0.5) {
             window.prediction = className
+            isMax = true;
         }
-        const classPrediction = className + ": " + probability.toFixed(2);
+        let classPrediction = className + ": " + probability.toFixed(2);
+        if (isMax) {
+            classPrediction = "<b>" + classPrediction + "</b>"
+        }
         labelContainer.childNodes[i].innerHTML = classPrediction;
     }
 
