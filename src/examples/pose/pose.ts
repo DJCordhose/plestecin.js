@@ -51,7 +51,7 @@ module Pose {
 
         accelerateViaPosition(deltaT) {
             const posePrediction = window.prediction;
-            console.log(posePrediction);
+            // console.log(posePrediction);
             const factor = 1;
             if ('up' === posePrediction) this.velocity.y -= this.acceleration / factor * deltaT ;
             if ('down' === posePrediction) this.velocity.y += this.acceleration / factor  * deltaT;

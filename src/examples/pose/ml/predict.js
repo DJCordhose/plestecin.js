@@ -46,6 +46,12 @@ async function predict() {
     // Prediction 2: run input through teachable machine classification model
     const prediction = await model.predict(posenetOutput);
 
+    document.getElementById('img-up').style.display = 'none'
+    document.getElementById('img-down').style.display = 'none'
+    document.getElementById('img-left').style.display = 'none'
+    document.getElementById('img-right').style.display = 'none'
+    document.getElementById('img-neutral').style.display = 'none'
+
     for (let i = 0; i < maxPredictions; i++) {
         const className = prediction[i].className
         const probability = prediction[i].probability
@@ -57,6 +63,12 @@ async function predict() {
         let classPrediction = className + ": " + probability.toFixed(2);
         if (isMax) {
             classPrediction = "<b>" + classPrediction + "</b>"
+            try {
+                // console.log(className)
+                document.getElementById('img-' + className).style.display = 'block'
+            } catch (e) {
+
+            }
         }
         labelContainer.childNodes[i].innerHTML = classPrediction;
     }

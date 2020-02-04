@@ -54,7 +54,7 @@ var Pose;
         }
         Player.prototype.accelerateViaPosition = function (deltaT) {
             var posePrediction = window.prediction;
-            console.log(posePrediction);
+            // console.log(posePrediction);
             var factor = 1;
             if ('up' === posePrediction)
                 this.velocity.y -= this.acceleration / factor * deltaT;
