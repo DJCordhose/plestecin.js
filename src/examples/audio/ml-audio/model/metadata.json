@@ -1,1 +1,1 @@
-{"tfjsSpeechCommandsVersion":"0.4.0","modelName":"TMv2","timeStamp":"2020-02-13T10:51:12.405Z","wordLabels":["Hoch","Links","Rechts","Runter","_background_noise_"]}
+{"tfjsSpeechCommandsVersion":"0.4.0","modelName":"TMv2","timeStamp":"2020-02-13T11:30:15.626Z","wordLabels":["Down","Left","Neutral","Right","Up","_background_noise_"]}
