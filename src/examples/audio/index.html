@@ -25,20 +25,18 @@
             border: 5px solid black;
         }
         #label-container, #audio-label-container {
-            font-size: xx-large;
+            font-size: x-large;
         }
 
         #label-img-container {
-            margin-top: 50px;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div id='all'>
     <div id='control'>
-        <div><canvas id="canvas"></canvas></div>
-        <div id="label-container"></div>
-        <div id="audio-label-container"></div>
         <div id="label-img-container">
             <img id='img-up' src='ml/img/up.png' height="200px" style="display: none;">
             <img id='img-down' src='ml/img/down.png' height="200px" style="display: none;">
@@ -46,6 +44,11 @@
             <img id='img-right' src='ml/img/right.png' height="200px" style="display: none;">
             <img id='img-neutral' src='ml/img/neutral.png' height="200px" style="display: none;">
         </div>
+        <div><canvas id="canvas"></canvas></div>
+        <h2>Pose</h2>
+        <div id="label-container"></div>
+        <h2>Audio</h2>
+        <div id="audio-label-container"></div>
     </div>
     <div id='game'>
         <canvas id='field'></canvas>
@@ -83,17 +86,20 @@ function updateDisplay(maxPredictions, prediction) {
         if (isMax) {
             classPrediction = "<b>" + classPrediction + "</b>"
         }
-        // labelContainer.childNodes[i].innerHTML = classPrediction;
+        labelContainer.childNodes[i].innerHTML = classPrediction;
 
     }
 }
 
 async function loop(timestamp) {
+    const validDirections = ['up', 'down', 'left', 'right']
     webcam.update(); // update the webcam frame
     const posePrediction = await predictPose();
     updateDisplay(maxPredictions, posePrediction)
-    const prediction = window.audioPrediction
-    // window.prediction = window.posePrediction
+    let prediction = window.audioPrediction
+    if (!validDirections.includes(prediction)) {
+        prediction = window.posePrediction
+    }
     window.prediction = prediction
     document.getElementById('img-up').style.display = 'none'
     document.getElementById('img-down').style.display = 'none'
@@ -101,7 +107,6 @@ async function loop(timestamp) {
     document.getElementById('img-right').style.display = 'none'
     document.getElementById('img-neutral').style.display = 'none'
     try {
-        // console.log(className)
         document.getElementById('img-' + prediction).style.display = 'block'
     } catch (e) {
         document.getElementById('img-neutral').style.display = 'block'
