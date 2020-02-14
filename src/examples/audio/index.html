@@ -63,15 +63,14 @@
 
 <script src="ml/tf.min.js"></script>
 <script src="ml/teachablemachine-pose.min.js"></script>
-
-<script type="text/javascript">
-const URL = "./ml/model/";
-</script>
+<script src="ml-audio/speech-commands.min.js"></script>
 
 <script src="ml/predict.js"></script>
+<script src="ml-audio//predict.js"></script>
 <script type="text/javascript">
-    init()
+initPoseModel("./ml/model/")
+initAudioModel(window.location.href + "ml-audio/model/")
 </script>
-
+    
 </body>
 </html>

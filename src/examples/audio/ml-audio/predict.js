@@ -4,7 +4,7 @@
 
 // the link to your model provided by Teachable Machine export panel
 
-async function createModel() {
+async function createModel(URL) {
     const checkpointURL = URL + "model.json"; // model topology
     const metadataURL = URL + "metadata.json"; // model metadata
 
@@ -20,8 +20,8 @@ async function createModel() {
     return recognizer;
 }
 
-async function init() {
-    const recognizer = await createModel();
+async function initAudioModel(URL) {
+    const recognizer = await createModel(URL);
     const classLabels = recognizer.wordLabels(); // get class labels
     const labelContainer = document.getElementById("label-container");
     for (let i = 0; i < classLabels.length; i++) {
@@ -35,7 +35,7 @@ async function init() {
         const scores = result.scores; // probability of prediction for each class
         // render the probability scores per class
         for (let i = 0; i < classLabels.length; i++) {
-            const classPrediction = classLabels[i] + ": " + result.scores[i].toFixed(2);
+            const classPrediction = classLabels[i] + ": " + scores[i].toFixed(2);
             labelContainer.childNodes[i].innerHTML = classPrediction;
         }
     }, {

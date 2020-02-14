@@ -4,7 +4,7 @@
 // the link to your model provided by Teachable Machine export panel
 let model, webcam, ctx, labelContainer, maxPredictions;
 
-async function init() {
+async function initPoseModel(URL) {
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
 
