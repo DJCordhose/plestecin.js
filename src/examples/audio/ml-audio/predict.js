@@ -23,7 +23,7 @@ async function createModel(URL) {
 async function initAudioModel(URL) {
     const recognizer = await createModel(URL);
     const classLabels = recognizer.wordLabels(); // get class labels
-    const labelContainer = document.getElementById("label-container");
+    const labelContainer = document.getElementById("audio-label-container");
     for (let i = 0; i < classLabels.length; i++) {
         labelContainer.appendChild(document.createElement("div"));
     }
@@ -34,8 +34,19 @@ async function initAudioModel(URL) {
     recognizer.listen(result => {
         const scores = result.scores; // probability of prediction for each class
         // render the probability scores per class
+        let isMax = false;
         for (let i = 0; i < classLabels.length; i++) {
-            const classPrediction = classLabels[i] + ": " + scores[i].toFixed(2);
+            const className = classLabels[i].toLowerCase()
+            const probability = scores[i]
+            if (probability > 0.5) {
+                window.audioPrediction = className
+                isMax = true;
+            }
+    
+            let classPrediction = className + ": " + probability.toFixed(2);
+            if (isMax) {
+                classPrediction = "<b>" + classPrediction + "</b>"
+            }
             labelContainer.childNodes[i].innerHTML = classPrediction;
         }
     }, {
