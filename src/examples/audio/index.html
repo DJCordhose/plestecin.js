@@ -68,8 +68,21 @@
 <script src="ml/predict.js"></script>
 <script src="ml-audio//predict.js"></script>
 <script type="text/javascript">
-initPoseModel("./ml/model/")
-initAudioModel(window.location.href + "ml-audio/model/")
+
+async function loop(timestamp) {
+    webcam.update(); // update the webcam frame
+    await predictPose();
+    window.requestAnimationFrame(loop);
+}
+
+async function init(timestamp) {
+    webcam = await initPoseModel("./ml/model/")
+    await initAudioModel(window.location.href + "ml-audio/model/")
+    window.requestAnimationFrame(loop);
+}
+
+init()
+
 </script>
     
 </body>

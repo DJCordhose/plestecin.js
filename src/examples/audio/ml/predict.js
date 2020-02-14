@@ -20,7 +20,6 @@ async function initPoseModel(URL) {
     webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
     await webcam.setup(); // request access to the webcam
     await webcam.play();
-    window.requestAnimationFrame(loop);
 
     // append/get elements to the DOM
     const canvas = document.getElementById("canvas");
@@ -30,15 +29,10 @@ async function initPoseModel(URL) {
     for (let i = 0; i < maxPredictions; i++) { // and class labels
         labelContainer.appendChild(document.createElement("div"));
     }
+    return webcam
 }
 
-async function loop(timestamp) {
-    webcam.update(); // update the webcam frame
-    await predict();
-    window.requestAnimationFrame(loop);
-}
-
-async function predict() {
+async function predictPose() {
     // Prediction #1: run input through posenet
     // estimatePose can take in an image, video or canvas html element
     const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
